@@ -7,18 +7,13 @@ import { RevealObserver } from "./_components/reveal-observer";
 import { SiteFooter } from "./_components/site-footer";
 import { SiteNav } from "./_components/site-nav";
 import { Skills } from "./_components/skills";
-import { Spotlight } from "./_components/spotlight";
 import { Work } from "./_components/work";
 
 export default function Home() {
   return (
     <>
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[60rem] overflow-hidden">
-        <div className="aurora"><span /><span /><span /></div>
-        <div className="dots absolute inset-0" />
-      </div>
       <SiteNav />
-      <main id="main" tabIndex={-1} className="relative outline-none">
+      <main id="main" tabIndex={-1} className="outline-none">
         <Hero />
         <About />
         <Skills />
@@ -29,7 +24,6 @@ export default function Home() {
       </main>
       <SiteFooter />
       <RevealObserver />
-      <Spotlight />
     </>
   );
 }

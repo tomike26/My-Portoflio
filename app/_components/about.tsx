@@ -1,27 +1,24 @@
 import { about } from "../_lib/content";
-import { Icon } from "./icon";
 import { Section } from "./section";
 
 export function About() {
   return (
-    <Section id="about" number="01" label="About" title="A little about" muted="how I work.">
+    <Section id="about" title={about.heading} stacked>
       <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
-        <div data-reveal className="space-y-6 lg:col-span-7">
-          {about.intro.map((p, i) => (
-            <p key={i} className={i === 0 ? "text-xl leading-relaxed text-text" : "text-lg leading-relaxed text-muted"}>
-              {p}
-            </p>
-          ))}
+        <div data-reveal className="lg:col-span-7">
+          <p className="text-xl leading-relaxed md:text-2xl md:leading-relaxed">{about.lead}</p>
+          <p className="mt-5 max-w-[56ch] text-lg text-muted">{about.day}</p>
+          <blockquote className="mt-10 border-l-2 border-accent pl-6">
+            <p className="display text-xl leading-snug md:text-2xl">&ldquo;{about.quote}&rdquo;</p>
+          </blockquote>
         </div>
+
         <div data-reveal style={{ "--d": 1 } as React.CSSProperties} className="lg:col-span-5">
-          <div className="spotlight rounded-2xl card border border-line p-6 md:p-7">
-            <h3 className="font-mono text-xs tracking-[0.16em] text-muted uppercase">{about.experienceHeading}</h3>
-            <ul className="mt-5 space-y-3.5">
+          <div className="rounded-lg bg-raised p-6 md:p-8">
+            <h3 className="text-sm text-muted">{about.experienceHeading}</h3>
+            <ul className="mt-5 flex flex-wrap gap-2">
               {about.experienceAreas.map((area) => (
-                <li key={area} className="flex gap-3">
-                  <span className="mt-1 flex size-[18px] shrink-0 items-center justify-center rounded-full bg-blue/15 text-blue">
-                    <Icon name="check" className="size-3" />
-                  </span>
+                <li key={area} className="rounded-full border border-line px-3.5 py-1.5 text-[0.95rem]">
                   {area}
                 </li>
               ))}
@@ -30,16 +27,19 @@ export function About() {
         </div>
       </div>
 
-      <dl data-reveal className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <dl data-reveal className="mt-12 grid gap-4 sm:grid-cols-3">
         {about.highlights.map((h) => (
-          <div key={h.value} className="spotlight flex flex-col rounded-2xl card border border-line p-6">
-            <dt className="order-2 mt-3 text-[0.95rem] leading-snug">{h.label}</dt>
-            <dd className="order-1 text-[2.1rem] leading-none font-semibold tracking-[-0.04em] text-blue">{h.value}</dd>
-            <dd className="order-3 mt-auto pt-4 font-mono text-xs text-muted">{h.context}</dd>
+          <div
+            key={h.value}
+            className="flex flex-col rounded-lg bg-raised p-6 md:p-7"
+          >
+            <dt className="order-2 mt-3 font-medium">{h.label}</dt>
+            <dd className="display order-1 text-[clamp(2rem,3.2vw,2.75rem)] leading-none text-accent">{h.value}</dd>
+            <dd className="order-3 mt-auto pt-4 text-sm text-muted">{h.context}</dd>
           </div>
         ))}
       </dl>
-      <p className="mt-4 font-mono text-xs text-muted">{about.highlightsNote}</p>
+      <p className="mt-4 text-sm text-muted">{about.highlightsNote}</p>
     </Section>
   );
 }

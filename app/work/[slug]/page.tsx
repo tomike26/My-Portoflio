@@ -7,9 +7,8 @@ import { ProjectImage } from "../../_components/project-image";
 import { RevealObserver } from "../../_components/reveal-observer";
 import { SiteFooter } from "../../_components/site-footer";
 import { SiteNav } from "../../_components/site-nav";
-import { Spotlight } from "../../_components/spotlight";
 import { publicFileExists } from "../../_lib/public-file";
-import { caseStudies, getCaseStudy, type CaseStudy } from "../../_lib/projects";
+import { caseStudies, getCaseStudy, type CaseStudy, type Prose } from "../../_lib/projects";
 
 export function generateStaticParams() {
   return caseStudies.map((p) => ({ slug: p.slug }));
@@ -49,51 +48,35 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 
   return (
     <>
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[50rem] overflow-hidden">
-        <div className="aurora"><span /><span /><span /></div>
-        <div className="dots absolute inset-0" />
-      </div>
       <SiteNav />
-      <main id="main" tabIndex={-1} className="relative outline-none">
+      <main id="main" tabIndex={-1} className="band-navy outline-none">
         <article>
-          <header id="top" className="pt-32 pb-16 md:pt-44 md:pb-20">
-            <Container>
-              <Link
-                href="/#work"
-                className="intro group inline-flex items-center gap-2 rounded-full border border-line-strong px-4 py-2 text-sm text-muted transition-colors hover:border-text hover:text-text"
-              >
+          <header id="top" className="band-lavender">
+            <Container className="pt-32 pb-16 md:pt-40 md:pb-20">
+              <Link href="/#work" className="intro link-group group inline-flex items-center gap-2 text-sm text-muted hover:text-text">
                 <Icon name="arrowLeft" className="size-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
-                Back to selected work
+                <span className="link pb-0.5">Selected work</span>
               </Link>
-
-              <p
-                className="intro mt-14 font-mono text-xs tracking-[0.18em] text-blue uppercase"
-                style={{ "--d": 1 } as React.CSSProperties}
-              >
+              <p className="intro mt-14 text-sm text-muted" style={{ "--d": 1 } as React.CSSProperties}>
                 Case study · {project.category}
               </p>
               <h1
-                className="intro mt-5 max-w-[16ch] text-[clamp(2.75rem,7vw,6rem)] leading-[0.98] font-semibold tracking-[-0.05em] text-balance"
+                className="intro display mt-3 max-w-[14ch] text-[clamp(2.5rem,6vw,5rem)] leading-[1] text-balance"
                 style={{ "--d": 2 } as React.CSSProperties}
               >
                 {project.title}
-                <span className="text-blue">.</span>
               </h1>
-              <p
-                className="intro mt-8 max-w-[48ch] text-xl text-muted md:text-2xl"
-                style={{ "--d": 3 } as React.CSSProperties}
-              >
+              <p className="intro mt-8 max-w-[46ch] text-xl text-muted md:text-2xl" style={{ "--d": 3 } as React.CSSProperties}>
                 {study.intro}
               </p>
-
               <dl
-                className="intro mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4"
+                className="intro mt-14 grid gap-x-10 gap-y-6 border-t border-line pt-6 sm:grid-cols-2 lg:grid-cols-4"
                 style={{ "--d": 4 } as React.CSSProperties}
               >
                 {[...study.meta, { label: "Stack", value: project.tags.join(", ") }].map((m) => (
-                  <div key={m.label} className="bg-surface p-5">
-                    <dt className="font-mono text-[11px] tracking-[0.16em] text-muted uppercase">{m.label}</dt>
-                    <dd className="mt-2">{m.value}</dd>
+                  <div key={m.label}>
+                    <dt className="text-sm text-muted">{m.label}</dt>
+                    <dd className="mt-1">{m.value}</dd>
                   </div>
                 ))}
               </dl>
@@ -101,79 +84,74 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
           </header>
 
           {hasImage && (
-            <Container>
-              <div data-reveal className="group relative aspect-[16/9] overflow-hidden rounded-3xl border border-line">
+            <Container className="pt-16">
+              <div data-reveal className="relative aspect-[16/9] overflow-hidden rounded-[4px] bg-raised">
                 <ProjectImage src={project.image} title={project.title} sizes="(min-width: 1200px) 1120px, 100vw" priority />
               </div>
             </Container>
           )}
 
-          <Container className="pb-24 md:pb-32">
-            {visible.map((chapter, i) => {
+          <Container className="py-20 md:py-28">
+            {visible.map((chapter) => {
               const value = study[chapter.key];
               return (
                 <section
                   key={chapter.key}
                   aria-labelledby={`${chapter.key}-heading`}
                   data-reveal
-                  className="grid gap-5 border-t border-line py-12 md:py-14 lg:grid-cols-12 lg:gap-10"
+                  className="grid gap-5 border-t border-line py-12 lg:grid-cols-12 lg:gap-10"
                 >
-                  <div className="lg:col-span-4">
-                    <p aria-hidden="true" className="font-mono text-xs text-blue">
-                      {String(i + 1).padStart(2, "0")}
-                    </p>
-                    <h2 id={`${chapter.key}-heading`} className="mt-3 text-2xl font-semibold tracking-[-0.03em]">
-                      {chapter.title}
-                    </h2>
-                  </div>
+                  <h2 id={`${chapter.key}-heading`} className="display text-2xl leading-tight lg:col-span-4">
+                    {chapter.title}
+                  </h2>
                   <div className="lg:col-span-7 lg:col-start-6">
                     {value === undefined ? (
-                      <p className="rounded-xl border border-dashed border-line-strong p-4 font-mono text-xs text-muted">
+                      <p className="border-l-2 border-dashed border-field pl-4 text-sm text-muted">
                         Development only: nothing here yet. Add <code>{chapter.key}</code> to the {project.slug} case
                         study in app/_lib/projects.ts. This note never appears on the live site.
                       </p>
-                    ) : Array.isArray(value) ? (
-                      <dl className="grid gap-4 sm:grid-cols-2">
-                        {value.map((o) => (
-                          <div key={o.label} className="spotlight flex flex-col rounded-2xl card border border-line p-6">
-                            <dt className="order-2 mt-3 text-[0.95rem] text-muted">{o.label}</dt>
-                            <dd className="order-1 text-[2.25rem] leading-none font-semibold tracking-[-0.04em] text-blue">
-                              {o.value}
-                            </dd>
+                    ) : chapter.key === "outcomes" ? (
+                      <dl className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+                        {(value as NonNullable<CaseStudy["outcomes"]>).map((o) => (
+                          <div key={o.label} className="flex flex-col border-t border-text/80 pt-4">
+                            <dt className="order-2 mt-2 text-muted">{o.label}</dt>
+                            <dd className="display order-1 text-[2.25rem] leading-none">{o.value}</dd>
                           </div>
                         ))}
                       </dl>
                     ) : (
-                      <p className="max-w-[64ch] text-lg leading-[1.75] text-muted">{value}</p>
+                      <div className="max-w-[62ch] space-y-5 text-lg leading-[1.75] text-muted">
+                        {([] as string[]).concat(value as Prose).map((para) => (
+                          <p key={para}>{para}</p>
+                        ))}
+                      </div>
                     )}
                   </div>
                 </section>
               );
             })}
 
-            {study.note && <p className="border-t border-line pt-6 font-mono text-xs text-muted">{study.note}</p>}
+            {study.note && <p className="border-t border-line pt-6 text-sm text-muted italic">{study.note}</p>}
 
-            <nav aria-label="More work" className="mt-20 grid gap-4 sm:grid-cols-2">
-              <Link
-                href="/#work"
-                className="spotlight group rounded-2xl card border border-line p-6 transition-colors hover:border-line-strong"
-              >
-                <span className="flex items-center gap-2 font-mono text-xs text-muted">
+            <nav aria-label="More work" className="mt-20 grid gap-10 border-t border-text/80 pt-10 sm:grid-cols-2">
+              <Link href="/#work" className="link-group group">
+                <span className="flex items-center gap-2 text-sm text-muted">
                   <Icon name="arrowLeft" className="size-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
                   Back
                 </span>
-                <span className="mt-3 block text-xl font-semibold tracking-[-0.02em]">All selected work</span>
+                <span className="display mt-2 block text-[2rem] leading-tight">
+                  <span className="link">All selected work</span>
+                </span>
               </Link>
               {next.slug !== project.slug && (
-                <Link
-                  href={`/work/${next.slug}`}
-                  className="spotlight group rounded-2xl border border-blue/40 bg-blue/10 p-6 transition-colors hover:border-blue sm:text-right"
-                >
-                  <span className="flex items-center gap-2 font-mono text-xs text-blue sm:justify-end">
+                <Link href={`/work/${next.slug}`} className="link-group group sm:text-right">
+                  <span className="flex items-center gap-2 text-sm text-muted sm:justify-end">
                     Next case study
                     <Icon name="arrowRight" className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                   </span>
-                  <span className="mt-3 block text-xl font-semibold tracking-[-0.02em]">{next.title}</span>
+                  <span className="display mt-2 block text-[2rem] leading-tight transition-colors group-hover:text-accent">
+                    <span className="link">{next.title}</span>
+                  </span>
                 </Link>
               )}
             </nav>
@@ -182,7 +160,6 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
       </main>
       <SiteFooter />
       <RevealObserver />
-      <Spotlight />
     </>
   );
 }

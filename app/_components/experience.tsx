@@ -5,47 +5,55 @@ import { Section } from "./section";
 
 export function Experience() {
   return (
-    <Section id="experience" number="04" label="Experience" title="Experience" muted="at a glance.">
-      <ol className="relative ml-1.5 border-l border-line md:ml-[14rem]">
+    <Section
+      id="experience"
+      title="Experience"
+      intro="Newest first. Open any role for the details."
+      band="band-lavender"
+      sticky
+    >
+      <ol className="relative space-y-4 border-l border-line pl-6 md:pl-8">
         {experience.map((role, i) => (
-          <li key={`${role.company}-${role.dates}`} data-reveal style={{ "--d": i } as React.CSSProperties} className="relative pb-10 pl-8 last:pb-0 md:pl-10">
+          <li key={`${role.company}-${role.dates}`} data-reveal style={{ "--d": i } as React.CSSProperties} className="relative">
             <span
               aria-hidden="true"
-              className={`absolute top-2 -left-[5px] size-[9px] rounded-full ${role.current ? "live bg-blue shadow-[0_0_14px_rgb(79_139_255/0.9)]" : "border border-line-strong bg-bg"}`}
+              className={`absolute top-8 -left-[calc(1.5rem+5px)] size-[9px] rounded-full md:-left-[calc(2rem+5px)] ${role.current ? "bg-accent" : "border border-field bg-bg"}`}
             />
-            <p className="font-mono text-xs text-muted md:absolute md:top-1.5 md:right-[calc(100%+2.5rem)] md:w-48 md:text-right md:whitespace-nowrap">
-              {role.dates}
-            </p>
-            <details className="expand group mt-2 md:mt-0">
-              <summary className="spotlight -mx-4 cursor-pointer rounded-2xl border border-transparent px-4 py-3 transition-colors duration-300 hover:border-line hover:bg-surface group-open:border-line group-open:bg-surface">
-                <div className="flex items-start justify-between gap-6">
+            <details className="expand group rounded-lg bg-raised">
+              <summary className="cursor-pointer p-6 md:p-7">
+                <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-2">
                   <div className="min-w-0">
-                    <h3 className="text-xl font-semibold tracking-[-0.02em]">
-                      {role.title}
-                      <span className="text-blue"> · {role.company}</span>
+                    <h3 className="display text-xl leading-tight transition-colors group-hover:text-accent md:text-2xl">
+                      {role.company}
                     </h3>
-                    <p className="mt-1.5 text-muted">{role.summary}</p>
+                    <p className="mt-1 text-muted">{role.title}</p>
                   </div>
-                  <span className="mt-1 flex shrink-0 items-center gap-1.5 font-mono text-xs text-muted transition-colors group-hover:text-text">
-                    <span className="hidden sm:inline group-open:hidden">More</span>
-                    <span className="hidden sm:group-open:inline">Less</span>
+                  <p className="flex items-center gap-2 text-sm text-muted">
+                    {role.current && (
+                      <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-medium text-on-accent">Current</span>
+                    )}
+                    {role.dates}
+                  </p>
+                </div>
+                <div className="mt-4 flex items-end justify-between gap-6">
+                  <p className="max-w-[54ch]">{role.summary}</p>
+                  <span className="flex shrink-0 items-center gap-1.5 text-sm font-medium text-accent">
+                    <span className="group-open:hidden">Details</span>
+                    <span className="hidden group-open:inline">Close</span>
                     <Icon name="chevronDown" className="size-4 transition-transform duration-300 group-open:rotate-180" />
-                    <span className="sr-only">details for {role.company}</span>
+                    <span className="sr-only">for {role.company}</span>
                   </span>
                 </div>
               </summary>
-              <div className="px-0 pt-4 pb-2">
-                <ul className="max-w-[68ch] space-y-3 text-[0.95rem] text-muted">
+              <div className="border-t border-line px-6 pt-5 pb-6 md:px-7">
+                <ul className="max-w-[64ch] space-y-2.5 text-muted">
                   {role.details.map((d) => (
-                    <li key={d} className="flex gap-3">
-                      <span aria-hidden="true" className="mt-[0.7rem] h-px w-3 shrink-0 bg-blue/70" />
-                      <span>
-                        <Emphasize text={d} />
-                      </span>
+                    <li key={d} className="relative pl-5 before:absolute before:left-0 before:content-['–']">
+                      <Emphasize text={d} />
                     </li>
                   ))}
                 </ul>
-                <p className="mt-4 font-mono text-xs text-muted">{role.location}</p>
+                <p className="mt-4 text-sm text-muted">{role.location}</p>
               </div>
             </details>
           </li>

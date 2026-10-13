@@ -1,42 +1,49 @@
 import { Container } from "./container";
 
-// Shared section shell: a mono index, a two-tone heading and optional intro.
+// Plain section shell: a display heading on the left, content on the right.
 export function Section({
   id,
-  number,
-  label,
   title,
-  muted,
   intro,
+  band = "band-navy",
+  stacked = false,
+  divider = false,
+  sticky = false,
+  aside,
+  className = "",
   children,
 }: {
   id: string;
-  number: string;
-  label: string;
   title: string;
-  muted?: string;
   intro?: string;
+  band?: "band-navy" | "band-lavender";
+  // Heading above the content instead of beside it, for full-width content.
+  stacked?: boolean;
+  // Hairline above, for a section that follows one in the same band.
+  divider?: boolean;
+  // Keep the side heading in view while the content scrolls (side layout only).
+  sticky?: boolean;
+  // Extra element beside the heading in the stacked layout.
+  aside?: React.ReactNode;
+  className?: string;
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} aria-labelledby={`${id}-heading`} className="py-24 md:py-32">
-      <Container>
-        <div data-reveal className="max-w-3xl">
-          <p className="flex items-center gap-3 font-mono text-xs tracking-[0.18em] text-blue uppercase">
-            <span aria-hidden="true">{number}</span>
-            <span aria-hidden="true" className="h-px w-8 bg-blue/50" />
-            {label}
-          </p>
-          <h2
-            id={`${id}-heading`}
-            className="mt-5 text-[clamp(2.25rem,4.6vw,3.75rem)] leading-[1.05] font-semibold tracking-[-0.04em] text-balance"
-          >
+    <section id={id} aria-labelledby={`${id}-heading`} className={`${band} ${className}`}>
+      <Container className={`grid gap-y-10 py-24 md:py-32 ${divider ? "border-t border-line" : ""} ${stacked ? "md:gap-y-14" : "lg:grid-cols-12 lg:gap-x-10"}`}>
+        <div
+          data-reveal
+          className={stacked ? "flex flex-wrap items-end justify-between gap-6" : `lg:col-span-4 ${sticky ? "lg:sticky lg:top-28 lg:self-start" : ""}`}
+        >
+          <div>
+          <h2 id={`${id}-heading`} className="display max-w-[14ch] text-[clamp(2rem,3.6vw,3rem)] leading-[1.1] text-balance">
             {title}
-            {muted && <span className="text-muted"> {muted}</span>}
           </h2>
-          {intro && <p className="mt-5 max-w-[56ch] text-lg text-muted">{intro}</p>}
+          {intro && <p className="mt-5 max-w-[34ch] text-muted">{intro}</p>}
+          </div>
+          {aside}
         </div>
-        <div className="mt-14 md:mt-16">{children}</div>
+        <div className={`min-w-0 ${stacked ? "" : "lg:col-span-8"}`}>{children}</div>
       </Container>
     </section>
   );

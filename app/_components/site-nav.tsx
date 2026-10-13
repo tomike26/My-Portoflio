@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { navItems, profile } from "../_lib/content";
 import { Icon } from "./icon";
@@ -13,6 +14,8 @@ export function SiteNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  // Over the lavender hero (home page, not scrolled) the bar uses dark text.
+  const onHero = usePathname() === "/" && !scrolled;
 
   // Scroll spy (home page only; on other pages no sections match).
   useEffect(() => {
@@ -80,11 +83,11 @@ export function SiteNav() {
   return (
     <>
       <div
-        className={`fixed inset-x-0 top-0 z-40 transition-[background-color,border-color] duration-500 ${scrolled ? "border-b border-line bg-bg/75 backdrop-blur-xl" : "border-b border-transparent"}`}
+        className={`fixed inset-x-0 top-0 z-40 transition-[background-color,box-shadow] duration-500 ${onHero ? "band-lavender !bg-transparent" : "band-navy !bg-navy/90 shadow-[0_1px_0_var(--line)] backdrop-blur-md"}`}
       >
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-full focus:bg-blue focus:px-4 focus:py-2 focus:text-on-blue"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-[4px] focus:bg-text focus:px-4 focus:py-2 focus:text-bg"
         >
           Skip to content
         </a>
@@ -92,37 +95,30 @@ export function SiteNav() {
           aria-label="Primary"
           className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-6 px-6 sm:px-10 md:h-[4.5rem]"
         >
-          <Link href="/" className="group flex items-center gap-3">
-            <span
-              aria-hidden="true"
-              className="flex size-9 items-center justify-center rounded-xl border border-blue/40 bg-blue/10 font-mono text-xs font-medium text-blue transition-colors duration-300 group-hover:bg-blue group-hover:text-on-blue"
-            >
-              {profile.monogram}
-            </span>
-            <span className="font-medium tracking-[-0.02em]">{profile.name}</span>
+          <Link href="/" className="display text-lg leading-none transition-colors hover:text-accent">
+            {profile.name}
           </Link>
 
-          <ul className="hidden items-center gap-1 rounded-full border border-line bg-surface/60 p-1 text-sm lg:flex">
-            {navItems.map((item) => {
-              const isActive = active === item.id;
-              return (
-                <li key={item.id}>
-                  <Link
-                    href={`/#${item.id}`}
-                    aria-current={isActive ? "true" : undefined}
-                    className={`inline-flex h-9 items-center rounded-full px-4 transition-colors duration-300 ${isActive ? "bg-blue/15 text-text" : "text-muted hover:text-text"}`}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-8">
+            <ul className="hidden items-center gap-7 text-[0.95rem] lg:flex">
+              {navItems.map((item) => {
+                const isActive = active === item.id;
+                return (
+                  <li key={item.id}>
+                    <Link
+                      href={`/#${item.id}`}
+                      aria-current={isActive ? "true" : undefined}
+                      className={`link pb-0.5 transition-colors duration-300 hover:text-text ${isActive ? "text-text [background-size:100%_1px]" : "text-muted"}`}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
             <Link
               href="/#contact"
-              className="hidden h-10 items-center rounded-full bg-blue px-5 text-sm font-medium text-on-blue transition-colors duration-300 hover:bg-blue-light sm:inline-flex"
+              className="hidden h-10 items-center rounded-[4px] bg-text px-4 text-[0.95rem] font-medium text-bg transition-colors duration-300 hover:bg-accent hover:text-on-accent sm:inline-flex"
             >
               Get in touch
             </Link>
@@ -132,10 +128,10 @@ export function SiteNav() {
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               onClick={() => setMenuOpen(true)}
-              className="inline-flex size-10 items-center justify-center rounded-full border border-line-strong text-muted transition-colors hover:text-text lg:hidden"
+              className="-mr-2 inline-flex size-10 items-center justify-center lg:hidden"
             >
               <span className="sr-only">Open menu</span>
-              <Icon name="menu" className="size-5" />
+              <Icon name="menu" className="size-6" />
             </button>
           </div>
         </nav>
@@ -148,31 +144,27 @@ export function SiteNav() {
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
-          className="fixed inset-0 z-50 flex h-dvh flex-col bg-bg px-6 sm:px-10 lg:hidden"
+          className="band-navy fixed inset-0 z-50 flex h-dvh flex-col px-6 sm:px-10 lg:hidden"
         >
-          <div aria-hidden="true" className="aurora"><span /><span /><span /></div>
-          <div className="relative flex h-16 shrink-0 items-center justify-between">
-            <span className="font-medium">{profile.name}</span>
+          <div className="flex h-16 shrink-0 items-center justify-between">
+            <span className="display text-lg">{profile.name}</span>
             <button
               type="button"
               onClick={() => setMenuOpen(false)}
-              className="inline-flex size-10 items-center justify-center rounded-full border border-line-strong text-muted hover:text-text"
+              className="-mr-2 inline-flex size-10 items-center justify-center"
             >
               <span className="sr-only">Close menu</span>
-              <Icon name="close" className="size-5" />
+              <Icon name="close" className="size-6" />
             </button>
           </div>
-          <ul className="relative mt-8 flex-1 overflow-y-auto">
-            {[...navItems, { id: "contact", label: "Contact" } as const].map((item, i) => (
+          <ul className="mt-8 flex-1 overflow-y-auto border-t border-line">
+            {[...navItems, { id: "contact", label: "Contact" } as const].map((item) => (
               <li key={item.id} className="border-b border-line">
                 <Link
                   href={`/#${item.id}`}
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-baseline gap-4 py-5 text-4xl font-semibold tracking-[-0.04em]"
+                  className="display block py-5 text-[2.1rem] leading-none"
                 >
-                  <span aria-hidden="true" className="font-mono text-xs font-normal tracking-normal text-blue">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
                   {item.label}
                 </Link>
               </li>

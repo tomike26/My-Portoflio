@@ -1,49 +1,22 @@
 @import "tailwindcss";
 
-/* Colour-blocked system. The page is navy by default; sections switch to a
-   lavender band (matched to the portrait backdrop) or a paper surface by redefining the same tokens. Components only
-   use the tokens, so they adapt to whichever band they sit in. */
+/* Polished black system: a near-black page with slightly lighter cards and a
+   soft lavender accent. Components only use these tokens. */
 :root,
 .band-navy {
-  --bg: #0b1230;
-  --raised: #121b40;
-  --text: #eef1f8;
-  --muted: #a0aacb;
-  --line: #223061;
-  --field: #6e7ba6;
-  --accent: #5b91ff;
-  --on-accent: #0b1230;
+  --bg: #0a0d12;
+  --raised: #11161d;
+  --text: #f2f5f8;
+  --muted: #8b96a5;
+  --line: #1c232d;
+  --field: #4a5563;
+  --accent: #c4b5fd;
+  --on-accent: #0a0d12;
   --error: #ff8a8a;
 }
 
-.band-lavender {
-  --bg: #e1d9ee;
-  --raised: #ece6f5;
-  --text: #0b1230;
-  --muted: #4a4766;
-  --line: #c7bedb;
-  --field: #6e6890;
-  --accent: #2343c4;
-  --on-accent: #ffffff;
-  --error: #a3132b;
-}
-
-.band-paper {
-  --bg: #f4f7ff;
-  --raised: #ffffff;
-  --text: #0b1230;
-  --muted: #4a4f6a;
-  --line: #c9d2ea;
-  --field: #6b7290;
-  --accent: #2343c4;
-  --on-accent: #ffffff;
-  --error: #b42318;
-}
-
 @layer components {
-  .band-navy,
-  .band-lavender,
-  .band-paper {
+  .band-navy {
     background-color: var(--bg);
     color: var(--text);
   }
@@ -59,8 +32,8 @@
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
   --color-error: var(--error);
-  --color-navy: #0b1230;
-  --color-navy-deep: #070c20;
+  --color-navy: #0a0d12;
+  --color-navy-deep: #06080b;
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -72,7 +45,7 @@
 html {
   scroll-padding-top: 5rem;
   -webkit-text-size-adjust: 100%;
-  background: #0b1230;
+  background: #0a0d12;
 }
 
 body {
@@ -84,8 +57,32 @@ body {
 }
 
 ::selection {
-  background: #4f8bff;
-  color: #0b1230;
+  background: #231e3a;
+  color: #f2f5f8;
+}
+
+/* Hero backdrop: a faint dot grid that fades out, and one soft lavender glow. */
+.hero-backdrop {
+  background:
+    radial-gradient(38rem 26rem at 78% 30%, rgb(196 181 253 / 0.10), transparent 70%),
+    radial-gradient(30rem 24rem at 8% 80%, rgb(196 181 253 / 0.03), transparent 70%);
+}
+
+.dot-grid {
+  background-image: radial-gradient(rgb(242 245 248 / 0.06) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 30%, transparent 80%);
+}
+
+/* The glowing full stop after the title. */
+.glow-dot {
+  color: var(--accent);
+  text-shadow: 0 0 24px rgb(196 181 253 / 0.6);
+}
+
+/* About statement: words light up as the paragraph scrolls through view. */
+.lit-word {
+  transition: color 0.3s;
 }
 
 :focus-visible {
@@ -97,7 +94,11 @@ body {
 /* Headings: the same family as body text, heavier and tighter. */
 .display {
   font-weight: 600;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.035em;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Underline that draws in on hover. */
@@ -122,14 +123,6 @@ body {
   transition: text-decoration-color 0.2s;
 }
 
-/* Portrait edges dissolve into the matching lavender band. */
-.portrait-fade {
-  mask-image:
-    linear-gradient(to right, transparent 0%, #000 30%, #000 85%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, #000 28%);
-  mask-composite: intersect;
-}
-
 /* Expandable experience entries. */
 details.expand::details-content {
   block-size: 0;
@@ -151,29 +144,34 @@ details.expand > summary::-webkit-details-marker {
   display: none;
 }
 
-/* Motion: a gentle fade on load and on scroll. Off for reduced motion. */
+/* Motion: hero load, the stack strip, words lighting up in About, and hover
+   lifts. Everything here is off for reduced motion. */
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
   }
 
   .intro {
-    animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.1, 1) both;
-    animation-delay: calc(var(--d, 0) * 100ms);
+    animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.1, 1) both;
+    animation-delay: calc(var(--d, 0) * 90ms);
   }
 
-  .js [data-reveal] {
-    opacity: 0;
-    transform: translateY(12px);
-    transition:
-      opacity 0.8s ease-out,
-      transform 0.8s cubic-bezier(0.2, 0.7, 0.1, 1);
-    transition-delay: calc(var(--d, 0) * 70ms);
+  @supports (animation-timeline: view()) {
+    .lit-word {
+      animation: light linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 45%;
+    }
   }
 
-  .js [data-reveal].is-visible {
-    opacity: 1;
-    transform: none;
+  .post {
+    animation: post 0.6s cubic-bezier(0.2, 0.7, 0.1, 1) both;
+    animation-delay: calc(450ms + var(--d, 0) * 110ms);
+  }
+
+  .post .result {
+    animation: settle 0.5s ease-out both;
+    animation-delay: calc(700ms + var(--d, 0) * 110ms);
   }
 }
 
@@ -185,6 +183,29 @@ details.expand > summary::-webkit-details-marker {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+@keyframes light {
+  from {
+    color: rgb(242 245 248 / 0.22);
+  }
+  to {
+    color: var(--text);
+  }
+}
+
+@keyframes post {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
   }
 }
 

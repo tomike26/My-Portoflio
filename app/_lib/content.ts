@@ -1,4 +1,4 @@
-// Site copy. Edit text here; components only handle presentation.
+// Site copy, aligned with the CV. Edit text here; components only handle presentation.
 
 export const profile = {
   name: "Tomike Kolajo",
@@ -7,17 +7,10 @@ export const profile = {
   monogram: "TK",
   role: "Frontend Engineer",
   email: "kolajoelizabeth@gmail.com",
-  // Hero portrait in /public. Remove the file to fall back to the code card.
+  phone: { display: "+234 810 682 7158", href: "tel:+2348106827158" },
+  // Hero portrait in /public.
   photo: "/assets/tomike.jpg",
   photoAlt: "Portrait of Tomike Kolajo",
-};
-
-// Availability indicator in the hero. Set `show: false` to hide it, or
-// change the label and tone ("open" shows a blue dot, "busy" a grey one).
-export const availability = {
-  show: true,
-  tone: "open" as "open" | "busy",
-  label: "Open to frontend roles",
 };
 
 export const links = {
@@ -36,67 +29,54 @@ export const links = {
 
 export const navItems = [
   { id: "about", label: "About" },
-  { id: "skills", label: "Skills" },
   { id: "work", label: "Work" },
   { id: "experience", label: "Experience" },
-  { id: "approach", label: "Approach" },
+  { id: "skills", label: "Skills" },
 ] as const;
 
 export const hero = {
-  headline: "Building products people can actually use.",
-  // Word in the headline set in italic.
-  italic: "actually",
+  greeting: "Hi, I'm",
+  title: "Frontend Engineer",
   supporting:
-    "I build web applications with React, Next.js and TypeScript, from responsive interfaces to dashboards and features that connect to APIs.",
-  primaryCta: "View Selected Work",
-  secondaryCta: "Get in Touch",
-  // Shown in the hero's code card. Facts only, from the sections below.
-  card: {
-    role: "Frontend Engineer",
-    experience: "4+ years",
-    stack: ["React", "Next.js", "TypeScript"],
-    focus: ["Components", "APIs", "Performance"],
-    currently: "Sparkpay",
-  },
+    "I build fast, easy-to-maintain web apps with React, Next.js and TypeScript, most recently for invoicing, payroll and bank reconciliation.",
+  primaryCta: "See my work",
+  // Tools under the hero, all from the CV.
+  stack: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Redux Toolkit", "Zustand", "Axios", "Jest", "Cypress", "Vercel"],
 };
 
+
 export const about = {
-  heading: "A little about how I work.",
-  lead: "I've been building web applications for over four years, mostly with React, Next.js and TypeScript. Right now I'm at Sparkpay, working on the frontend of a multi-tenant payroll platform.",
-  day: "Day to day, that means reusable components, connecting screens to backend APIs, reviewing pull requests and fixing the bugs that only show up in production.",
-  quote:
-    "A dashboard that felt fine on my machine was slow for the people using it. Since then, I measure performance instead of trusting how fast something feels.",
-  experienceHeading: "What I mostly work on",
-  experienceAreas: [
-    "Multi-tenant products for businesses",
-    "Payroll workflows and dashboards",
-    "Shared component libraries",
-    "Connecting interfaces to REST APIs",
-    "Page speed and Core Web Vitals",
-    "Tests, bug fixes and accessibility",
+  heading: "About me",
+  // Lit word by word as it scrolls into view.
+  statement:
+    "I build reusable component libraries, connect interfaces to REST APIs and make pages faster. Right now I'm at Dufuna, building Nansi Credit Controller, a multi-tenant platform for invoicing, expenses and accounts receivable.",
+  body: "I've been building web applications for over four years and I work closely with backend, design and product teams. When integration turns up a backend problem, I write it up with a reproducible case and work with the backend engineers until it's fixed.",
+  principles: [
+    {
+      title: "Build it once",
+      body: "I'd rather build a component or hook once and reuse it than copy it into five places. At Sparkpay that grew into a shared library of 40+ components.",
+    },
+    {
+      title: "Measure, don't guess",
+      body: "A dashboard that felt fine on my machine was slow for the people using it. Now I check real numbers, then fix what's actually slow.",
+    },
+    {
+      title: "Handle every state",
+      body: "Most of what I build runs on backend data, so each screen gets proper loading, error and empty states, not just the happy path.",
+    },
   ],
-  // `context` notes where each figure comes from, so they aren't read as one
-  // project or as external benchmarks.
-  highlights: [
-    { value: "4+ years", label: "Building frontends", context: "Across all roles" },
-    { value: "40+", label: "Components in the shared library I built", context: "Sparkpay" },
-    { value: "3.2s → 1.1s", label: "Payroll dashboard load (LCP)", context: "Sparkpay" },
-  ],
-  highlightsNote: "Figures from my CV.",
 };
 
 export const skills = {
   heading: "Skills and tools",
-  core: {
-    label: "What I use most days",
-    note: "The core of my work",
-    items: ["React", "Next.js", "TypeScript", "JavaScript", "HTML", "CSS", "Tailwind CSS"],
-  },
-  additionalLabel: "Also used",
   groups: [
-    { label: "Frameworks and state", items: ["Vue.js", "Redux", "Context API", "Zustand"] },
+    { label: "Languages", items: ["JavaScript", "TypeScript", "HTML", "CSS"] },
+    { label: "Frontend", items: ["React", "Next.js", "Vue.js", "React Router"] },
+    { label: "State management", items: ["Redux", "Redux Toolkit", "Zustand", "Context API"] },
+    { label: "Styling", items: ["Tailwind CSS", "Framer Motion"] },
+    { label: "API integration", items: ["REST APIs", "Axios", "NestJS APIs", "Paystack"] },
     { label: "Testing", items: ["Jest", "React Testing Library", "Cypress"] },
-    { label: "Tools", items: ["Vite", "Webpack", "npm", "Git", "GitHub", "Vercel"] },
+    { label: "Tools and deployment", items: ["Git", "Vite", "Webpack", "npm", "Vercel"] },
   ],
 };
 
@@ -112,19 +92,32 @@ export type Role = {
 
 export const experience: Role[] = [
   {
+    company: "Dufuna",
+    title: "Frontend Developer",
+    location: "Remote",
+    dates: "October 2025 – Present",
+    current: true,
+    summary: "Nansi Credit Controller, a multi-tenant SaaS platform for invoicing, expenses and accounts receivable.",
+    details: [
+      "I build and maintain invoicing features (creation, templates, sending and payment tracking) and employee expense management (submission, approval and reimbursement).",
+      "I built the bank reconciliation module, which matches imported bank transactions to invoices and expenses. It has suggested-match review, manual picker modals, CSV export and pagination for high-volume statements, with transactions coming from live bank sync through Mono or manual statement upload with AI-based extraction.",
+      "I build React and TypeScript interfaces on a Keycloak-authenticated, domain-scoped multi-tenant setup, using a shared Axios API layer across a large codebase.",
+      "I find and report backend defects during integration, such as data-matching bugs and extraction pipeline failures, with reproducible test cases, and work with backend engineers to get them fixed.",
+      "I work with Git feature branches and pull requests, merging regularly alongside several other branches in progress.",
+    ],
+  },
+  {
     company: "Sparkpay",
     title: "Frontend Developer",
     location: "Nigeria",
-    dates: "April 2025 – Present",
-    current: true,
-    summary: "Frontend for a multi-tenant payroll platform.",
+    dates: "November 2022 – October 2025",
+    summary: "Payroll workflows and a shared component library for a multi-tenant payroll platform.",
     details: [
-      "I build payroll features in Next.js and React, covering salary processing, PAYE calculations and statutory deductions from start to finish.",
-      "I built a shared library of 40+ components with Tailwind CSS and TypeScript. New features now take about 30% less time, and the team works from one shared set of design standards.",
-      "I brought Largest Contentful Paint on the payroll dashboards down from 3.2s to 1.1s with code splitting and lazy loading, and layout shift from 0.15 to 0.05 with image optimization.",
-      "I track down and fix production bugs and slow spots in the payroll workflows people rely on most.",
-      "I review pull requests and helped agree team conventions for how we structure components and call APIs.",
-      "I wrote unit and integration tests with Jest and React Testing Library for the most critical payroll components, reaching 75% coverage.",
+      "I built end-to-end payroll workflows with React and Next.js, covering salary processing, PAYE calculations and statutory deductions.",
+      "I built a reusable library of 40+ components in TypeScript and Tailwind CSS. It cut the time needed for new features by about 30% and set shared design standards.",
+      "I brought the payroll dashboard's Largest Contentful Paint down from 3.2s to 1.1s with code splitting and lazy loading.",
+      "I fixed production bugs, reviewed pull requests and set conventions for component structure and API integration.",
+      "I wrote unit and integration tests with Jest and React Testing Library for critical payroll components.",
     ],
   },
   {
@@ -132,69 +125,42 @@ export const experience: Role[] = [
     title: "Frontend Developer, Contract",
     location: "Nigeria",
     dates: "January 2024 – April 2025",
-    summary: "Reusable React components and API-driven dashboards.",
+    summary: "Reusable React components and hooks, and dashboards connected to REST APIs.",
     details: [
-      "I built 15+ reusable React components and custom hooks. That cut duplicated code by about 40%, and features that used to take 2 weeks took about 5 days.",
-      "I connected dashboards to REST APIs so people could actually act on the backend data.",
-      "I took UI work from design handoff to production, matching the designs closely on desktop and mobile.",
-      "I fixed performance, compatibility and rendering issues that made the app unstable on some devices and browsers.",
+      "I built 15+ reusable React components and custom hooks, reducing code duplication and making the application easier to maintain.",
+      "I integrated REST APIs into data-driven dashboards, connecting backend services to interactive interfaces.",
+      "I turned UI designs into pixel-accurate, responsive React interfaces, from design handoff through production on desktop and mobile.",
+      "I diagnosed and fixed frontend performance issues, rendering bugs and cross-browser problems.",
+      "I refactored repetitive UI logic into reusable components and hooks, and worked with designers and backend developers to deliver features that matched product requirements.",
     ],
   },
   {
     company: "Merkle",
-    title: "Salesforce Software Engineer",
+    title: "Salesforce Software Engineer, Contract",
     location: "US",
     dates: "July 2022 – November 2023",
     summary: "Salesforce Commerce Cloud storefronts for enterprise clients.",
     details: [
-      "I customized Salesforce Commerce Cloud storefronts (SFRA) for enterprise clients, including AO Smith.",
-      "I wrote custom controllers, pipelines and scripts for client-specific shopping flows.",
-      "I supported releases for international clients with distributed teams, from development through to launch.",
-    ],
-  },
-  {
-    company: "Dufuna (Cotta-Cush)",
-    title: "Frontend Developer",
-    location: "Lagos",
-    dates: "May 2022 – June 2022",
-    summary: "Short role building complete web applications.",
-    details: ["I built complete web applications, writing reusable interface components and connecting them to APIs."],
-  },
-  {
-    company: "REACH Africa",
-    title: "Intern",
-    location: "Lagos",
-    dates: "February 2021 – April 2022",
-    summary: "Where I started: client websites in Vue.js.",
-    details: [
-      "I built and maintained client website interfaces in Vue.js.",
-      "I fixed 20+ production issues across client sites and worked with senior developers on accessibility fixes that improved mobile usability scores by 35%.",
+      "I customized Salesforce Commerce Cloud storefronts with SFRA for enterprise clients, including AO Smith.",
+      "I wrote custom controllers, pipelines and scripts for client-specific commerce workflows.",
+      "I worked with distributed engineering teams on enterprise releases, covering development, debugging and delivery.",
     ],
   },
 ];
 
-export const approach = {
-  heading: "Beyond the interface.",
-  intro: "A few things I care about that don't show up in a screenshot.",
-  themes: [
-    {
-      title: "Build it once",
-      body: "I'd rather build a component or hook once and use it everywhere than copy it into five places. At Sparkpay that grew into a shared library of 40+ components.",
-    },
-    {
-      title: "Measure, don't guess",
-      body: "How fast a page feels on my laptop isn't how it feels for users. I check real numbers, then fix what's actually slow.",
-    },
-    {
-      title: "Connect it properly",
-      body: "Most of what I build runs on backend data, so a big part of my work is connecting interfaces to REST APIs and keeping application state predictable.",
-    },
-    {
-      title: "Leave it working",
-      body: "I write tests for the parts people depend on most, and I take production bugs, accessibility and cross-browser issues seriously.",
-    },
+export const education: {
+  heading: string;
+  items: { title: string; detail?: string; dates?: string }[];
+} = {
+  heading: "Education and training",
+  items: [
+    { title: "B.Sc.", detail: "Federal University of Agriculture, Abeokuta, Ogun State", dates: "2014 – 2021" },
+    { title: "Self-taught Frontend Developer" },
+    { title: "Frontend Development Bootcamp", detail: "Dufuna" },
+    { title: "Certified Salesforce Developer" },
   ],
 };
+
 
 export const contact = {
   heading: "Let's build something useful.",

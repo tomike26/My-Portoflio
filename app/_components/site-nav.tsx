@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { navItems, profile } from "../_lib/content";
 import { Icon } from "./icon";
@@ -14,8 +13,6 @@ export function SiteNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  // Over the lavender hero (home page, not scrolled) the bar uses dark text.
-  const onHero = usePathname() === "/" && !scrolled;
 
   // Scroll spy (home page only; on other pages no sections match).
   useEffect(() => {
@@ -83,7 +80,7 @@ export function SiteNav() {
   return (
     <>
       <div
-        className={`fixed inset-x-0 top-0 z-40 transition-[background-color,box-shadow] duration-500 ${onHero ? "band-lavender !bg-transparent" : "band-navy !bg-navy/90 shadow-[0_1px_0_var(--line)] backdrop-blur-md"}`}
+        className={`band-navy fixed inset-x-0 top-0 z-40 transition-[background-color,box-shadow] duration-500 ${scrolled ? "!bg-navy/80 shadow-[0_1px_0_var(--line)] backdrop-blur-md" : "!bg-transparent"}`}
       >
         <a
           href="#main"
@@ -108,8 +105,12 @@ export function SiteNav() {
                     <Link
                       href={`/#${item.id}`}
                       aria-current={isActive ? "true" : undefined}
-                      className={`link pb-0.5 transition-colors duration-300 hover:text-text ${isActive ? "text-text [background-size:100%_1px]" : "text-muted"}`}
+                      className={`inline-flex items-center gap-2 transition-colors duration-300 hover:text-text ${isActive ? "text-text" : "text-muted"}`}
                     >
+                      <span
+                        aria-hidden="true"
+                        className={`size-1.5 rounded-full bg-accent transition-opacity duration-300 ${isActive ? "opacity-100" : "opacity-0"}`}
+                      />
                       {item.label}
                     </Link>
                   </li>
@@ -118,9 +119,9 @@ export function SiteNav() {
             </ul>
             <Link
               href="/#contact"
-              className="hidden h-10 items-center rounded-[4px] bg-text px-4 text-[0.95rem] font-medium text-bg transition-colors duration-300 hover:bg-accent hover:text-on-accent sm:inline-flex"
+              className="hidden h-11 items-center rounded-full bg-accent px-6 text-[0.95rem] font-medium text-on-accent transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-10px_rgb(159_224_193/0.8)] sm:inline-flex"
             >
-              Get in touch
+              Let&apos;s talk
             </Link>
             <button
               ref={menuButtonRef}

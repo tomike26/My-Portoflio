@@ -1,45 +1,39 @@
 import { about } from "../_lib/content";
-import { Section } from "./section";
+import { Container } from "./container";
 
 export function About() {
+  const words = about.statement.split(" ");
   return (
-    <Section id="about" title={about.heading} stacked>
-      <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
-        <div data-reveal className="lg:col-span-7">
-          <p className="text-xl leading-relaxed md:text-2xl md:leading-relaxed">{about.lead}</p>
-          <p className="mt-5 max-w-[56ch] text-lg text-muted">{about.day}</p>
-          <blockquote className="mt-10 border-l-2 border-accent pl-6">
-            <p className="display text-xl leading-snug md:text-2xl">&ldquo;{about.quote}&rdquo;</p>
-          </blockquote>
+    <section id="about" aria-labelledby="about-heading" className="band-navy">
+      <Container className="py-24 md:py-32">
+        <h2 id="about-heading" className="text-lg text-accent">
+          {about.heading}
+        </h2>
+        <p className="mt-6 max-w-[30ch] text-[clamp(1.85rem,3.6vw,3.1rem)] leading-[1.18] font-medium tracking-[-0.03em]">
+          {words.map((w, i) => (
+            <span key={i} className="lit-word">
+              {w}
+              {i < words.length - 1 ? " " : ""}
+            </span>
+          ))}
+        </p>
+
+        <div className="mt-16 grid gap-12 lg:grid-cols-12 lg:gap-10">
+          <p className="max-w-[60ch] text-lg leading-relaxed text-muted lg:col-span-8">{about.body}</p>
         </div>
 
-        <div data-reveal style={{ "--d": 1 } as React.CSSProperties} className="lg:col-span-5">
-          <div className="rounded-lg bg-raised p-6 md:p-8">
-            <h3 className="text-sm text-muted">{about.experienceHeading}</h3>
-            <ul className="mt-5 flex flex-wrap gap-2">
-              {about.experienceAreas.map((area) => (
-                <li key={area} className="rounded-full border border-line px-3.5 py-1.5 text-[0.95rem]">
-                  {area}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <dl data-reveal className="mt-12 grid gap-4 sm:grid-cols-3">
-        {about.highlights.map((h) => (
-          <div
-            key={h.value}
-            className="flex flex-col rounded-lg bg-raised p-6 md:p-7"
-          >
-            <dt className="order-2 mt-3 font-medium">{h.label}</dt>
-            <dd className="display order-1 text-[clamp(2rem,3.2vw,2.75rem)] leading-none text-accent">{h.value}</dd>
-            <dd className="order-3 mt-auto pt-4 text-sm text-muted">{h.context}</dd>
-          </div>
-        ))}
-      </dl>
-      <p className="mt-4 text-sm text-muted">{about.highlightsNote}</p>
-    </Section>
+        <ul className="mt-20 grid gap-5 md:grid-cols-3">
+          {about.principles.map((p) => (
+            <li
+              key={p.title}
+              className="rounded-3xl border border-line bg-raised p-8 transition-[transform,border-color] duration-300 hover:-translate-y-1 hover:border-accent/60"
+            >
+              <h3 className="display text-2xl">{p.title}</h3>
+              <p className="mt-3 leading-relaxed text-muted">{p.body}</p>
+            </li>
+          ))}
+        </ul>
+      </Container>
+    </section>
   );
 }

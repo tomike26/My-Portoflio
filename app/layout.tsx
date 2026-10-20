@@ -15,12 +15,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b1230",
+  themeColor: "#0f1714",
 };
-
-// Marks that JS is available so scroll-reveal styles only apply when they
-// can run. Runs before first paint.
-const jsFlag = `document.documentElement.classList.add("js")`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -29,9 +25,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
       className={`${geist.variable} antialiased`}
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: jsFlag }} />
-      </head>
       <body>{children}</body>
     </html>
   );

@@ -25,6 +25,12 @@ const paths = {
       <path d="m13 6 6 6-6 6" />
     </>
   ),
+  arrowDown: (
+    <>
+      <path d="M12 5v14" />
+      <path d="m6 13 6 6 6-6" />
+    </>
+  ),
   arrowLeft: (
     <>
       <path d="M19 12H5" />
@@ -38,6 +44,7 @@ const paths = {
     </>
   ),
   chevronDown: <path d="m6 9 6 6 6-6" />,
+  plus: <path d="M12 6v12M6 12h12" />,
   check: <path d="M20 6 9 17l-5-5" />,
   menu: <path d="M4 9h16M4 15h16" />,
   close: <path d="M18 6 6 18M6 6l12 12" />,

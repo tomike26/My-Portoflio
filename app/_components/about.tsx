@@ -5,11 +5,11 @@ export function About() {
   const words = about.statement.split(" ");
   return (
     <section id="about" aria-labelledby="about-heading" className="band-navy">
-      <Container className="py-24 md:py-32">
+      <Container className="py-10 md:py-10">
         <h2 id="about-heading" className="text-lg text-accent">
           {about.heading}
         </h2>
-        <p className="mt-6 max-w-[30ch] text-[clamp(1.85rem,3.6vw,3.1rem)] leading-[1.18] font-medium tracking-[-0.03em]">
+        <p className="mt-6 max-w-[30ch] text-[clamp(1.85rem,3.6vw,3.1rem)] leading-[1.18] font-small tracking-[-0.03em]">
           {words.map((w, i) => (
             <span key={i} className="lit-word">
               {w}
@@ -18,7 +18,7 @@ export function About() {
           ))}
         </p>
 
-        <div className="mt-16 grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div className="mt-8 grid gap-12 lg:grid-cols-12 lg:gap-10">
           <p className="max-w-[60ch] text-lg leading-relaxed text-muted lg:col-span-8">{about.body}</p>
         </div>
 

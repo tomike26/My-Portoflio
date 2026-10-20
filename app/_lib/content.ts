@@ -49,7 +49,7 @@ export const about = {
   heading: "About me",
   // Lit word by word as it scrolls into view.
   statement:
-    "I build reusable component libraries, connect interfaces to REST APIs and make pages faster. Right now I'm at Dufuna, building Nansi Credit Controller, a multi-tenant platform for invoicing, expenses and accounts receivable.",
+    "Frontend engineer with over four years of experience building responsive, fast web applications with React, Next.js and TypeScript.",
   body: "I've been building web applications for over four years and I work closely with backend, design and product teams. When integration turns up a backend problem, I write it up with a reproducible case and work with the backend engineers until it's fixed.",
   principles: [
     {

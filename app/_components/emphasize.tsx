@@ -6,7 +6,7 @@ const FIGURE = /(\d+(?:\.\d+)?(?:\+|%|s\b| weeks| days)?)/g;
 export function Emphasize({ text }: { text: string }) {
   return text.split(FIGURE).map((part, i) =>
     i % 2 === 1 ? (
-      <span key={i} className="font-medium text-text">
+      <span key={i} className="font-medium text-white">
         {part}
       </span>
     ) : (

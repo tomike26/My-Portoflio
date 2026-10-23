@@ -1,50 +1,103 @@
 import Image from "next/image";
 import Link from "next/link";
-import { hero, links, profile } from "../_lib/content";
+import { companies, hero, links, profile, workLog } from "../_lib/content";
 import { publicFileExists } from "../_lib/public-file";
 import { Container } from "./container";
-import { Icon, type IconName } from "./icon";
+import { Icon } from "./icon";
 
-const socials: { icon: IconName; label: string; href: string }[] = [
-  { icon: "github", label: "GitHub", href: links.github.href },
-  { icon: "linkedin", label: "LinkedIn", href: links.linkedin.href },
-  { icon: "mail", label: "Email", href: links.email.href },
-];
-
-export function SocialButtons() {
+// Compact work log that floats over the portrait: shipped work as log lines,
+// then the payroll dashboard's load time before and after.
+function Console() {
   return (
-    <ul className="flex gap-2.5">
-      {socials.map((s) => {
-        const external = s.href.startsWith("http");
-        return (
-          <li key={s.label}>
-            <a
-              href={s.href}
-              {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="flex size-12 items-center justify-center rounded-2xl border border-line bg-raised/60 text-muted transition-[color,border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-accent hover:text-text"
-            >
-              <Icon name={s.icon} className="size-5" />
-              <span className="sr-only">
-                {s.label}
-                {external ? " (opens in a new tab)" : ""}
-              </span>
-            </a>
+    <figure className="overflow-hidden rounded-card border border-gunmetal bg-surface/95 shadow-rim backdrop-blur">
+      <div className="flex items-center justify-between border-b border-gunmetal px-4 py-2.5">
+        <figcaption className="text-body-sm text-frost">Work log</figcaption>
+        <span className="flex items-center gap-2 text-caption text-steel">
+          <span aria-hidden="true" className="live relative size-1.5 rounded-full bg-periwinkle" />
+          Newest first
+        </span>
+      </div>
+      <ol className="divide-y divide-gunmetal">
+        {workLog.slice(0, 3).map((line, i) => (
+          <li key={line.entry} className="log-line flex items-baseline gap-3 px-4 py-2.5" style={{ "--d": i } as React.CSSProperties}>
+            <span className="tnum w-[4.6rem] shrink-0 text-caption text-steel">{line.date}</span>
+            <span className="text-body-sm text-white">{line.entry}</span>
           </li>
-        );
-      })}
-    </ul>
+        ))}
+      </ol>
+      <div className="border-t border-gunmetal px-4 pt-3 pb-4">
+        <p className="text-caption text-frost">Payroll dashboard load time, Sparkpay</p>
+        <dl className="tnum mt-2 space-y-2 text-caption">
+          <div className="grid grid-cols-[3rem_1fr_2rem] items-center gap-2.5">
+            <dt className="text-steel">Before</dt>
+            <dd className="h-1.5 overflow-hidden rounded-full bg-gunmetal">
+              <div className="bar-grow h-full w-full rounded-full bg-steel/50" style={{ "--d": 0 } as React.CSSProperties} />
+            </dd>
+            <dd className="text-right text-frost">3.2s</dd>
+          </div>
+          <div className="grid grid-cols-[3rem_1fr_2rem] items-center gap-2.5">
+            <dt className="text-steel">After</dt>
+            <dd className="h-1.5 overflow-hidden rounded-full bg-gunmetal">
+              <div className="bar-grow h-full w-[34%] rounded-full bg-periwinkle" style={{ "--d": 1 } as React.CSSProperties} />
+            </dd>
+            <dd className="text-right font-medium text-white">1.1s</dd>
+          </div>
+        </dl>
+      </div>
+    </figure>
   );
 }
 
-// A quiet line of the tools I use most, under the hero.
-function StackLine() {
+function Portrait() {
   return (
-    <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-line pt-6">
-      <p className="text-sm text-muted">Tools I use most</p>
-      <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-[0.95rem]">
-        {hero.stack.map((item) => (
-          <li key={item} className="text-text/80">
-            {item}
+    <div className="intro relative mx-auto w-full max-w-[26rem] pb-40 sm:pb-24 lg:mr-0 lg:pb-0" style={{ "--d": 2 } as React.CSSProperties}>
+      {/* A thin ring of light turns slowly around the photo. */}
+      <div className="relative overflow-hidden rounded-[28px] p-px">
+        <div aria-hidden="true" className="halo absolute -inset-1/2" />
+        <div className="relative aspect-[4/5] overflow-hidden rounded-[27px] bg-surface">
+          <Image
+            src={profile.photo}
+            alt={profile.photoAlt}
+            fill
+            loading="eager"
+            fetchPriority="high"
+            sizes="(min-width: 1024px) 416px, 90vw"
+            className="object-cover object-[52%_40%]"
+          />
+          <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-canvas/70 to-transparent" />
+        </div>
+      </div>
+      <div className="float absolute right-0 bottom-0 left-4 sm:right-auto sm:left-auto sm:w-[18rem] sm:-translate-x-1/4 lg:-bottom-24 lg:-left-28 lg:translate-x-0">
+        <Console />
+      </div>
+    </div>
+  );
+}
+
+function Headline() {
+  const words = hero.headline.split(" ");
+  return words.map((w, i) => (
+    <span key={i}>
+      <span className="word" style={{ "--d": i } as React.CSSProperties}>
+        {w}
+      </span>
+      {i < words.length - 1 ? " " : ""}
+    </span>
+  ));
+}
+
+function CompanyBar() {
+  const items = [...companies, ...companies, ...companies, ...companies];
+  return (
+    <div className="marquee overflow-hidden">
+      <ul className="marquee-track flex w-max items-center" style={{ display: "flex", width: "max-content" }}>
+        {items.map((c, i) => (
+          <li
+            key={`${c}-${i}`}
+            aria-hidden={i >= companies.length ? "true" : undefined}
+            className="display shrink-0 px-8 text-subheading text-steel sm:px-12"
+          >
+            {c}
           </li>
         ))}
       </ul>
@@ -55,66 +108,55 @@ function StackLine() {
 export function Hero() {
   const hasPhoto = publicFileExists(profile.photo);
   return (
-    <section id="top" aria-labelledby="hero-title" className="band-navy relative overflow-hidden">
-      <div aria-hidden="true" className="hero-backdrop pointer-events-none absolute inset-0" />
+    <section id="top" aria-labelledby="hero-heading" className="relative overflow-hidden">
+      <div aria-hidden="true" className="aurora">
+        <span />
+        <span />
+      </div>
       <div aria-hidden="true" className="dot-grid pointer-events-none absolute inset-0" />
 
-      <Container className="relative pt-32 pb-16 md:pt-40 md:pb-20">
-        <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
-          <div className="min-w-0 lg:col-span-7">
-            <div className="intro flex flex-wrap items-center gap-3 text-lg text-muted">
-              <p>
-                {hero.greeting} <span className="font-medium text-text">{profile.name}</span>
-              </p>
-            </div>
-
-            <h1
-              id="hero-title"
-              className="intro mt-6 text-[clamp(3.5rem,9vw,7.75rem)] leading-[0.92] font-medium tracking-[-0.055em]"
-              style={{ "--d": 1 } as React.CSSProperties}
-            >
-              {hero.title}
-              <span className="glow-dot">.</span>
+      <Container className="relative pt-32 pb-20 md:pt-40 md:pb-28">
+        <div className="grid items-center gap-16 lg:grid-cols-12 lg:gap-10">
+          <div className="lg:col-span-7">
+            <p className="intro text-subheading text-frost">Hi, I&apos;m {profile.name}.</p>
+            <h1 id="hero-heading" className="display mt-4 max-w-[17ch] text-[40px] leading-[1.1] sm:text-[56px] sm:leading-[1.06]">
+              <Headline />
             </h1>
-
-            <p className="intro mt-8 max-w-[44ch] text-xl leading-relaxed text-muted" style={{ "--d": 2 } as React.CSSProperties}>
+            <p className="intro mt-6 max-w-[46ch] text-subheading text-frost" style={{ "--d": 5 } as React.CSSProperties}>
               {hero.supporting}
             </p>
-
-            <div className="intro mt-10 flex flex-wrap items-center gap-4" style={{ "--d": 3 } as React.CSSProperties}>
+            <div className="intro mt-10 flex flex-wrap items-center gap-3" style={{ "--d": 6 } as React.CSSProperties}>
+              <a href={links.email.href} className="btn-primary inline-flex h-11 items-center rounded-full px-6 font-medium transition-[filter]">
+                {hero.primaryCta}
+              </a>
               <Link
                 href="#work"
-                className="group inline-flex h-12 items-center gap-2 rounded-full bg-accent px-7 font-medium text-on-accent transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_40px_-12px_rgb(159_224_193/0.9)]"
+                className="group inline-flex h-11 items-center gap-1.5 rounded-full border border-steel/60 px-5 font-medium text-frost transition-colors hover:border-frost hover:text-white"
               >
-                {hero.primaryCta}
-                <Icon name="arrowDown" className="size-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+                {hero.secondaryCta}
+                <Icon name="chevronRight" className="size-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
-              <SocialButtons />
             </div>
+            <p className="intro mt-6 text-body-sm text-steel" style={{ "--d": 7 } as React.CSSProperties}>
+              Or find me on{" "}
+              <a href={links.github.href} target="_blank" rel="noopener noreferrer" className="text-periwinkle hover:underline">
+                GitHub<span className="sr-only"> (opens in a new tab)</span>
+              </a>{" "}
+              and{" "}
+              <a href={links.linkedin.href} target="_blank" rel="noopener noreferrer" className="text-periwinkle hover:underline">
+                LinkedIn<span className="sr-only"> (opens in a new tab)</span>
+              </a>
+              .
+            </p>
           </div>
-
-          {hasPhoto && (
-            <div className="intro relative mx-auto w-full max-w-[24rem] lg:col-span-5 lg:mr-0" style={{ "--d": 2 } as React.CSSProperties}>
-              <div aria-hidden="true" className="absolute -inset-16 bg-[radial-gradient(closest-side,rgb(159_224_193/0.32),transparent)]" />
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] ring-1 ring-accent/40 transition-transform duration-500 lg:rotate-2 lg:hover:rotate-0">
-                <Image
-                  src={profile.photo}
-                  alt={profile.photoAlt}
-                  fill
-                  loading="eager"
-                  fetchPriority="high"
-                  sizes="(min-width: 1024px) 384px, 90vw"
-                  className="object-cover object-[52%_40%]"
-                />
-              </div>
-            </div>
-          )}
+          <div className="lg:col-span-5">{hasPhoto ? <Portrait /> : <Console />}</div>
         </div>
       </Container>
 
-      <Container className="relative pb-20">
-        <StackLine />
-      </Container>
+      <div className="relative border-t border-gunmetal/70 py-10">
+        <p className="mb-6 text-center text-body-sm text-steel">Teams and clients I&apos;ve built for</p>
+        <CompanyBar />
+      </div>
     </section>
   );
 }

@@ -35,22 +35,39 @@ export const navItems = [
 ] as const;
 
 export const hero = {
-  greeting: "Hi, I'm",
-  title: "Frontend Engineer",
+  headline: "Frontend engineer building products people can actually use.",
   supporting:
     "I build fast, easy-to-maintain web apps with React, Next.js and TypeScript, most recently for invoicing, payroll and bank reconciliation.",
-  primaryCta: "See my work",
-  // Tools under the hero, all from the CV.
-  stack: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Redux Toolkit", "Zustand", "Axios", "Jest", "Cypress", "Vercel"],
+  primaryCta: "Email me",
+  secondaryCta: "See my work",
 };
+
+// The hero console: shipped work, newest first, written like deploy log lines.
+export const workLog: { date: string; entry: string; place: string }[] = [
+  { date: "Oct 2026", entry: "Launched everlastinghills.church", place: "Project" },
+  { date: "Sep 2026", entry: "Top 10 of 500+ entries with Scouvela", place: "BuildHer Hackathon" },
+  { date: "Oct 2025", entry: "Built the bank reconciliation module", place: "Dufuna" },
+  { date: "2022 – 2025", entry: "Shared library of 40+ components", place: "Sparkpay" },
+  { date: "2024 – 2025", entry: "15+ reusable components and hooks", place: "Intel Region" },
+];
+
+// Companies shown in the monochrome bar under the hero.
+export const companies = ["Dufuna", "Sparkpay", "Intel Region", "Merkle", "AO Smith"];
+
+// Headline figures, each with where it comes from.
+export const stats = [
+  { value: "4+ years", label: "Building frontends with React, Next.js and TypeScript" },
+  { value: "40+", label: "Components in the shared library I built at Sparkpay" },
+  { value: "~30%", label: "Less time to build new features with that library" },
+  { value: "Top 10", label: "Of 500+ entries at the She Code Africa BuildHer Hackathon" },
+];
 
 
 export const about = {
-  heading: "About me",
-  // Lit word by word as it scrolls into view.
+  heading: "How I work",
   statement:
     "Frontend engineer with over four years of experience building responsive, fast web applications with React, Next.js and TypeScript.",
-  body: "I've been building web applications for over four years and I work closely with backend, design and product teams. When integration turns up a backend problem, I write it up with a reproducible case and work with the backend engineers until it's fixed.",
+  body: "I work closely with backend, design and product teams. When integration turns up a backend problem, I write it up with a reproducible case and work with the backend engineers until it's fixed.",
   principles: [
     {
       title: "Build it once",
@@ -87,6 +104,9 @@ export type Role = {
   dates: string;
   current?: boolean;
   summary: string;
+  // Two or three results shown as tiles. All from the CV.
+  highlights: { value: string; label: string }[];
+  stack: string[];
   details: string[];
 };
 
@@ -98,6 +118,12 @@ export const experience: Role[] = [
     dates: "October 2025 – Present",
     current: true,
     summary: "Nansi Credit Controller, a multi-tenant SaaS platform for invoicing, expenses and accounts receivable.",
+    highlights: [
+      { value: "Bank reconciliation", label: "Module I built to match bank transactions to invoices" },
+      { value: "Mono", label: "Live bank sync, plus statement upload with AI extraction" },
+      { value: "Multi-tenant", label: "Keycloak auth, multiple organizations and domains" },
+    ],
+    stack: ["React", "TypeScript", "Axios", "Keycloak", "Git"],
     details: [
       "I build and maintain invoicing features (creation, templates, sending and payment tracking) and employee expense management (submission, approval and reimbursement).",
       "I built the bank reconciliation module, which matches imported bank transactions to invoices and expenses. It has suggested-match review, manual picker modals, CSV export and pagination for high-volume statements, with transactions coming from live bank sync through Mono or manual statement upload with AI-based extraction.",
@@ -112,6 +138,12 @@ export const experience: Role[] = [
     location: "Nigeria",
     dates: "November 2022 – October 2025",
     summary: "Payroll workflows and a shared component library for a multi-tenant payroll platform.",
+    highlights: [
+      { value: "3.2s → 1.1s", label: "Payroll dashboard Largest Contentful Paint" },
+      { value: "40+", label: "Components in the shared library" },
+      { value: "~30%", label: "Less time to build new features" },
+    ],
+    stack: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Jest", "React Testing Library"],
     details: [
       "I built end-to-end payroll workflows with React and Next.js, covering salary processing, PAYE calculations and statutory deductions.",
       "I built a reusable library of 40+ components in TypeScript and Tailwind CSS. It cut the time needed for new features by about 30% and set shared design standards.",
@@ -126,6 +158,12 @@ export const experience: Role[] = [
     location: "Nigeria",
     dates: "January 2024 – April 2025",
     summary: "Reusable React components and hooks, and dashboards connected to REST APIs.",
+    highlights: [
+      { value: "15+", label: "Reusable React components and custom hooks" },
+      { value: "REST APIs", label: "Connected to data-driven dashboards" },
+      { value: "Desktop + mobile", label: "Pixel-accurate, responsive interfaces" },
+    ],
+    stack: ["React", "REST APIs", "Responsive CSS"],
     details: [
       "I built 15+ reusable React components and custom hooks, reducing code duplication and making the application easier to maintain.",
       "I integrated REST APIs into data-driven dashboards, connecting backend services to interactive interfaces.",
@@ -140,6 +178,11 @@ export const experience: Role[] = [
     location: "US",
     dates: "July 2022 – November 2023",
     summary: "Salesforce Commerce Cloud storefronts for enterprise clients.",
+    highlights: [
+      { value: "AO Smith", label: "One of the enterprise clients I built storefronts for" },
+      { value: "SFRA", label: "Salesforce Commerce Cloud storefront customization" },
+    ],
+    stack: ["Salesforce Commerce Cloud", "SFRA"],
     details: [
       "I customized Salesforce Commerce Cloud storefronts with SFRA for enterprise clients, including AO Smith.",
       "I wrote custom controllers, pipelines and scripts for client-specific commerce workflows.",
